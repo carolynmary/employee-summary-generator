@@ -1,12 +1,37 @@
-const Manager = require("./lib/Manager");
-const Engineer = require("./lib/Engineer");
-const Intern = require("./lib/Intern");
-const questions = require("./lib/questions");
-const inquirer = require("inquirer");
-const path = require("path");
-const fs = require("fs");
+const addManager = require("./utils/addManager");
+const addEngineer = require("./utils/addEngineer");
+const addIntern = require("./utils/addIntern");
+const askRole = require("./utils/askRole");
+const generateHTML = require("./utils/generateHTML");
 
-const OUTPUT_DIR = path.resolve(__dirname, "output");
-const outputPath = path.join(OUTPUT_DIR, "team.html");
+const employeeTeam = [];
 
-const render = require("./lib/htmlRenderer");
+async function init() {
+    console.log("Welcome to the Employee Summary Generator!")
+    try {
+        const manager = await addManager();
+        employeeTeam.push(manager);
+        addEmployee()
+    } catch (err) {
+        console.log(err);
+    };
+}
+
+async function addEmployee() {
+    let answers = await askRole();
+    if (answers.role === "Engineer") {
+        const engineer = await addEngineer()
+        employeeTeam.push(engineer);
+        addEmployee();
+    };
+    if (answers.role === "Intern") {
+        const intern = await addIntern()
+        employeeTeam.push(intern);
+        addEmployee();
+    };
+    if (answers.role === "No more employees to add") {
+        generateHTML(employeeTeam);
+    };
+}
+
+init();

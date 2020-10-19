@@ -26,7 +26,6 @@ run command `npm i` to install dependencies
 
 ![CLI](./assets/CLI.png)
 ![CLI](./assets/htmlPage.png)
------take video or snapshots of CLI and HTML page -----
 run command `node app`
 
 ## Testing
